@@ -6,12 +6,12 @@ namespace Atv_7
     internal class Program
     {
 
-        static int MaiorValor(int[] sequencia)
+        static int MaiorValor(ref int[] sequencia)
         {
 
-            int maiorValor = 0;
+            int maiorValor = int.MinValue;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < sequencia.Length; i++)
             {
                 if (sequencia[i] > maiorValor)
                 {
@@ -22,15 +22,16 @@ namespace Atv_7
         }
 
 
-        static int MenorValor(int[] sequencia)
+        static int MenorValor(out int[] sequencia)
         {
+             sequencia = new int[] { -5, 1, -1, 3, 4, 40, 6, 7, 8, 9 };
             int menorValor = sequencia[0];
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < sequencia.Length; i++)
             {
-                if (sequencia[i] < menorValor)
+                if (sequencia[i] < menorValor)         //Separa menor valor
                 {
-                    menorValor = sequencia[i];
+                    menorValor = sequencia[i];        //Armazena menor valor
                 }
             }
             return menorValor;
@@ -40,7 +41,7 @@ namespace Atv_7
         static double ValorMedio(int[] sequencia)
         {
             double valorMedio = 0;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < sequencia.Length; i++)
             {
                 Convert.ToDouble(sequencia[i]);
                 valorMedio = valorMedio + sequencia[i];
@@ -53,10 +54,10 @@ namespace Atv_7
         {
             int[] maioresValores = new int[3];
             int x = 0;
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < sequencia.Length; j++)
             {
 
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < sequencia.Length - 1; i++)
                 {
                     if (sequencia[i] < sequencia[i + 1])
                     {
@@ -68,7 +69,7 @@ namespace Atv_7
                 }
 
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < maioresValores.Length; i++)
             {
                 maioresValores[i] = sequencia[i];
             }
@@ -82,11 +83,10 @@ namespace Atv_7
             int[] valoresNegativos = new int[10];
             int cont = 0;   //contador para determinar a quantidade de numeros negativos
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < sequencia.Length; i++)
             {
                 if (sequencia[i] < 0)
                 {
-
                     valoresNegativos[cont] = sequencia[i];       //Coloca valores negativos em vetor separado
                     cont++;                                        //Porém espaços vazios são preenchidos com 0
                 }
@@ -95,16 +95,11 @@ namespace Atv_7
             int[] valoresNegativosDefinitiva = new int[cont];   //Transformando vetor de negativos em outro para filtrar os 0's 
             for (int i = 0; i < cont; i++)
             {
-
-
                 valoresNegativosDefinitiva[i] = valoresNegativos[i];
 
-
-
-
             }
-            string result = string.Join(" ", valoresNegativosDefinitiva);
-            return result;
+            string resultado = string.Join(" ", valoresNegativosDefinitiva);
+            return resultado;
         }
 
       
@@ -112,37 +107,38 @@ namespace Atv_7
         static void Main(string[] args)
         {
 
-            int[] sequencia = new int[10] { -5, 1, -1, 3, 4, 40, 6, 7, 8, 9 };
+            int[] sequencia = new int[10] { -5, 1, -1, 3, 4, 40, 6, 7, 6, 9 };
+            int[] sequenciaA = new int[10];  //Copia valores da sequencia original
+            sequenciaA = sequencia;
 
 
-
-
-            Console.WriteLine("O maior número da sequência é: " + MaiorValor(sequencia));
-            Console.WriteLine("O menor número da sequência é: " + MenorValor(sequencia));
+            Console.WriteLine("O maior número da sequência é: " + MaiorValor(ref sequencia));
+            Console.WriteLine("O menor número da sequência é: " + MenorValor(out sequencia));
             Console.WriteLine("O valor médio da sequênica é: " + ValorMedio(sequencia));
             Console.WriteLine("Os três maiores valores da sequência são: " + MaioresValores(sequencia));
             Console.WriteLine("Números negativos: " + ValoresNegativos(sequencia));
 
-            int[] sequenciaA = new int[10] { -5, 1, -1, 3, 4, 40, 6, 7, 8, 9 };    //Reinicia valores da sequencia
-            Console.Write("Valores da sequência: ");
+               
+            Console.Write("Valores da sequência: ");        //Usando a segunda array q copia os valores originais da primeira que encontrasse filtrada
             for (int i = 0; i < sequenciaA.Length; i++)
             {
                 Console.Write(sequenciaA[i]);
                 Console.Write(" ");
-            }
+            }     
             Console.WriteLine();
-
-            int numToRemove = 4;
-            int numIndex = Array.IndexOf(sequenciaA, numToRemove);
+            Console.WriteLine("Digite o número a ser excluído: ");
+            int numParaRemover = Int32.Parse(Console.ReadLine()); ;
+            
+            int numIndex = Array.IndexOf(sequenciaA, numParaRemover);
             sequenciaA = sequenciaA.Where((val, idx) => idx != numIndex).ToArray();
-            Console.Write("Sequencia de números com 1 número excluído: ");
+            Console.Write("Sequencia de números com número(s) excluído(s): ");
             for (int i = 0; i < 9; i++)
             {
                 Console.Write(sequenciaA[i]);
                 Console.Write(" ");
             }
-            
 
+            
 
 
 
